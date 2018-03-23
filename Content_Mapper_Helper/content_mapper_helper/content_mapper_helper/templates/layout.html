@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{% block title %}{{ title }}{% endblock %}</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.2.0/css/fabric.min.css" />
+<link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.2.0/css/fabric.components.min.css" />
+<link rel="stylesheet" href="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-core/9.4.0/css/fabric.min.css">
+<script src="https://static2.sharepointonline.com/files/fabric/office-ui-fabric-js/1.2.0/js/fabric.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/2.9.0/jquery.serializejson.min.js"></script>
+
+<style>
+body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size:Large;
+background-color:white;
+padding:2em;
+width:100%;
+height:100%}
+
+/* Style the tab */
+
+a:link {
+    text-decoration: none;
+}
+a:hover {
+    
+    text-decoration: underline;
+    background-color:lightblue
+}
+</style>
+</head>
+<body>
+<!-- <header>
+   Navigation Bar  -->
+    <div class="ms-Grid">
+        <div class="ms-Grid-row">
+            <div class="ms-Grid-col ms-sm6 ms-md4 ms-lg2" style='float:left;font-size:X-Large'><strong><a href='#'>Content Mapper</a></strong></div>
+            <div class="ms-Grid-col ms-sm6 ms-md8 ms-lg10" >
+                <div class="tab" style='display:inline;font-size:X-Large;padding-left:150px;padding-right:75px'><a href='#'>IOT</a> </div>
+                    <div class="tab" style='display:inline;font-size:X-Large;padding-left:75px;padding-right:75px'><a href='#'>AI & ML 	</a></div>
+                    <div class="tab" style='display:inline;font-size:X-Large;padding-left:75px;padding-right:75px'><a href='#'>Serverless</a> </div>
+                    <div class="tab" style='display:inline;font-size:X-Large;padding-left:75px;padding-right:75px'><a href='#'>MixedReality</div>
+                    <div class="tab" style='display:inline;font-size:X-Large;padding-left:75px;padding-right:75px'><a href='#'>Data</div></a>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+		
+</header>
+
+{% set messages = get_flashed_messages() %}
+{% if messages %}
+<section>
+	{% for message in messages %}
+	<p>{{ message }}</p>
+	{% endfor %}
+</section>
+{% endif %}
+<section>
+{% block content %}{% endblock %}
+</section>
+<footer>
+<strong><p><center>You are viewing the application Content Mapper Schema Version-"2.0"</center></p></footer></strong>
+</footer>
+</body>
+</html>

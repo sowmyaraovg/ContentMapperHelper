@@ -1,0 +1,254 @@
+
+{% extends "layout.html" %}
+{% import "helpers/forms.html" as forms %}
+
+{% block title %}Welcome to Content Mapper !{% endblock %}
+{% block content %}
+{{ super() }}
+<!-- Style elements are inline here. It can be linked as External file-->
+<style>
+.row {
+  display: flex; /* equal height of the children */
+}
+
+.col {
+  flex: 1; /* additionally, equal width */
+  
+  padding: 1em;
+  border: solid;
+}
+.content {
+    display: none;
+}
+
+.buttonclass{
+  height: 50px;
+  width: 100px;
+}
+
+form {
+    line-height: 2em;
+}
+p {
+    margin: 5px 0;
+}
+h2 {
+    margin: 10px 0;
+    font-size: 1.2em;
+    font-weight: bold
+}
+#result {
+    margin: 10px;
+    background: #eee;
+    padding: 10px;
+    height: 40px;
+    overflow: auto;
+}
+
+
+
+.button1{background-color: rgb(130, 190, 130);height: 50px;width: 100px;} 
+.button2 {background-color: rgb(129, 153, 161);height: 50px;width: 100px;} 
+.button3 {background-color:rgb(199, 108, 121);height: 50px; width: 100px;}
+
+</style>
+
+<div class='row'>
+    <div class='column' style='width:65%;float:left;border:1px solid;overflow-y:scroll;border-color:maroon;padding:1%;background-color:azure;'>  
+       <!-- Section Form -->
+        <form action="/section" method="POST" id="content_form"  >
+            <fieldset>
+            <legend><strong>Schema Version -"2.0"</strong></legend>
+            <div style='width:100%' style='float:left'>
+             
+            <div class="ms-TextField">
+                {{section_form.SectionTitle.label(class_="ms-Label",id='titlelabel')}}
+                {{section_form.SectionTitle(class_='ms-TextField-field',id='title',placeholder='Add a new Section Title here')}}
+                <button class="ms-Button ms-Button--primary" type='submit' style='float:right;background-color:lightblue;' onclick=sectiondisable() >
+                    <span class="ms-Button-label">Create</span> 
+                </button>
+            </div>    
+        </form>
+
+        <!-- SectionContentForm -->
+        <form action="/sectioncontent" method="POST","GET">
+        
+            {{sc_form.Section_Title.label(class_="ms-Label",id='titlelabel')}}
+                            
+            {{sc_form.Section_Title(class_='ms-TextField-field',id='sectionlist')}}
+
+            <div class="ms-TextField">
+                {{sc_form.ScenarioName.label(class_="ms-Label")}}
+                {{sc_form.ScenarioName(class_='ms-TextField-field',id='scenarioname',placeholder='Add a new ScenarioName here')}}
+                
+                
+                <button class="ms-Button ms-Button--primary" type='submit' style='float:right;background-color:lightblue;'onclick=scenariodisable() >
+                    <span class="ms-Button-label">Create</span> 
+                </button>
+            </div>    
+
+            
+            {{sc_form.Scenario_Name.label(class_="ms-Label")}}
+                        
+            {{sc_form.Scenario_Name(class_='ms-TextField-field',id='scenariolist',placeholder='Add a new ScenarioName')}}
+            
+            <div class="ms-TextField">
+                {{sc_form.Description.label(class_="ms-Label",id='titlelabel')}}
+                {{sc_form.Description(class_='ms-TextField-field',id='desc',placeholder='Add Description')}}
+            </div><br>
+<!--     
+            To display Docs or Gaps Text box -->
+            <label class="ms-Label"style='display:inline;font-size:Large'><b>Select Docs Or Gaps    :    </b></label>
+            <label class="ms-Label" style='display:inline;font-size:Large;padding-left:5%'>Docs</label>
+                <input type="radio" name="group1" class="sim-maxi-btn trigger" data-rel="sim-maxi-desktop" />
+
+            <label class="ms-Label" style='display:inline;font-size:large;padding-left:10%'>Gaps</label>
+                <input type="radio" name="group1" class="sim-mega-btn trigger" data-rel="sim-mega-desktop" /><br><br>
+            <!-- Doc Form -->
+            <form action="/doc" method="POST" id="content_form"  >
+                <div class="Docs_Gaps">
+                    <div class="sim-maxi-desktop content">
+                        <div class="ms-TextField">
+                            {{doc_form.Name.label(class_="ms-Label",id='titlelabel')}}
+                            {{doc_form.Name(class_='ms-TextField-field',id='title',placeholder='Add Name')}}
+                        </div>
+                    
+                    <div class="ms-TextField">
+                        {{doc_form.Link.label(class_="ms-Label",id='titlelabel')}}
+                        {{doc_form.Link(class_='ms-TextField-field',id='title',placeholder='Add Link')}}
+                    </div>
+        
+                </div>
+            </form>  
+            <!-- Gap form  -->
+            <form action="/gap" method="POST" id="content_form"  > 
+                <div class="sim-mega-desktop content"><tr>
+                    <div class="ms-TextField">
+                        {{gap_form.GapDescription.label(class_="ms-Label",id='titlelabel')}}
+                        {{gap_form.GapDescription(class_='ms-TextField-field',id='title',placeholder='Add Description')}}
+                    </div>
+
+                    <div class="ms-TextField">
+                        {{gap_form.Url.label(class_="ms-Label",id='titlelabel')}}
+                        {{gap_form.Url(class_='ms-TextField-field',id='title',placeholder='Add Url')}}
+                    </div>
+                </div>
+           </form>
+        </div><br>
+ 
+ 
+        <div style='float:left'>
+            <input type ='button'  value ='Preview' id ="previewbutton" style='background-color:lightblue;width:7em;height:3em' onclick="myFunction()"> 
+            <input type ='button'  value ='Refresh' style='background-color:lightblue;width:7em;height:3em' onClick="window.location.reload()">
+        </div>
+        <div style='float:right'>
+            <button class="ms-Button ms-Button--primary" >
+            <span class="ms-Button-label">Submit</span> 
+            </button>
+        </div>
+    </fieldset>   
+   </form>    
+     
+    </div>
+
+<!-- To Display json -->
+<div class='column' style='width:30%;max-height:100%;float:left;border:1px solid;overflow-y:scroll;border-color:maroon;padding:1%;background-color:azure'>  
+  
+    <form id="myform" action="/section" method="GET" >
+        <center> <h2>JSON</h2></center>
+             <pre id="result" style='padding-top:6%;;max-width:100%;height:100%;'> </pre>
+    </form>         
+   
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+ 
+<!-- Function to show either docs or gaps -->
+<script type="text/javascript">
+   $(document).ready(function(){
+    $('.trigger').click(function() {
+    $('.content').hide();
+    $('.' + $(this).data('rel')).show();
+});
+   });
+ </script> 
+ <!-- Office UI Fabric for TextBox -->
+ <script  type="text/javascript">
+
+  var TextFieldElements = document.querySelectorAll(".ms-TextField");
+  for (var i = 0; i < TextFieldElements.length; i++) {
+    new fabric['TextField'](TextFieldElements[i]);
+  };
+</script> 
+ <!-- Office UI Fabric for button controls-->
+<script>
+  var ButtonElements = document.querySelectorAll(".ms-Button");
+  for (var i = 0; i < ButtonElements.length; i++) {
+    new fabric['Button'](ButtonElements[i], function() {
+      // Insert Event Here
+
+  });
+}
+ </script>
+  <!-- Office UI Fabric for Dropdown box -->
+ <script type="text/javascript">
+  var DropdownHTMLElements = document.querySelectorAll('.ms-Dropdown');
+  for (var i = 0; i < DropdownHTMLElements.length; ++i) {
+    var Dropdown = new fabric['Dropdown'](DropdownHTMLElements[i]);
+  }
+</script>
+<!-- To disable Sectionlist when the user adds ScenarioName and clicks create button -->
+<script type="text/javascript">
+    function sectiondisable()
+    {
+         document.getElementById("sectionlist").disabled = true
+    }
+
+</script>
+
+ <!-- To disable Scenariolist when the user adds SectionTile and clicks create button -->
+<script type="text/javascript">
+  function scenariodisable()
+  {
+       document.getElementById("scenariolist").disabled = true
+       document.getElementById("desc").disabled =false
+
+       
+  }
+</script>
+
+<!-- To display the form data in Json format -->
+<script type="text/javascript">
+
+$.fn.serializeObject = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
+
+$(function() {
+    $('form').submit(function() {
+        $('#result').text(JSON.stringify($('form').serializeObject(),null,4));
+        return false;
+    });
+});
+</script>
+
+{% endblock content %}
+
+<!--  Need to work still on
+1.    Preview Button 
+2.    Filter Scenarios based on SectionTitle
+3.    Office UI Fabric Labels for SectionTitle dropdown and ScenarioName dropdown is not working meaning the labels font size looks different
+4.   Javascript and CSS style elements can be migrated to main.js,main.css instatic folder respectively -->
